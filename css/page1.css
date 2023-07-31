@@ -1,0 +1,119 @@
+body {
+  font-family: Arial, sans-serif;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 105px auto 0px auto;
+  max-width: 600px;
+}
+
+li.checker {
+  border-top: 1px solid #ddd;
+  padding: 10px;
+}
+
+li:hover {
+  background-color: #f2f2f2;
+}
+
+#searchBox {
+  position: fixed;
+  top: 70px;
+  left: 50%;
+  width: 300px;
+  height: 20px;
+  margin-left: -150px;
+  padding: 5px;
+  border: 1px solid #ccc;
+}
+
+#modal {
+  display: none;
+  position: fixed;
+  top: 60px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  text-align: left;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+#modalContent {
+  background-color: #fff;
+  max-width: 400px;
+  width: 80%;
+  margin: 100px auto;
+  padding: 20px;
+  border-radius: 0px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+
+}
+
+#closeModal {
+  position: absolute;
+  top: 120px;
+  left: 90%;
+  transform: translate(-50%, -50%);
+  font-size: 30px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #555555;
+}
+
+li p {
+  font-weight: bold;
+  margin: 0;
+  text-align: left;
+}
+
+#csvList {
+  padding: 5px;
+}
+
+li li.category2 {
+  border: 3px solid #ddd;
+  font-size: 14px;
+  padding: 3px;
+  text-align: left;
+  margin-left: 10px;
+  vertical-align: middle;
+  display: inline-flex;
+  white-space: nowrap;
+}
+
+li li.condition {
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: 10px;
+  margin-top: 0px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+#modalContent p {
+  font-weight: bold;
+  margin: 0;
+}
+
+#modalContent #category {
+  border: 3px solid #ddd;
+  padding: 3px;
+  display: inline-block;
+}
+
+.info-container {
+  display: flex;
+  align-items: center;
+}
+
+@media screen and (min-width: 520px) {
+  /* 画面が1200px以上の場合に適用 */
+  #closeModal {
+    left: calc(50% + 200px); /* 中央から最大300px右側の位置に配置 */
+  }
+}

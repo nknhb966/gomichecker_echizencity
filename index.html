@@ -1,1 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>越前市ゴミチェッカー</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <script src="lib/leaflet/leaflet.js"></script>
+    <script src="js/common.js"></script>
+    <link rel="apple-touch-icon" href="image/gomi_icon.png"/>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="lib/leaflet/leaflet.css">
+</head>
+<body>
+    <div class="header"></div>
 
+    <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+    </div>
+    
+    <div class="menu" id="menu">
+        <ul>
+            <li><a href="#page1" onclick="storeAndReloadPage('page1')">分別一覧</a></li>
+            <li><a href="#page2" onclick="storeAndReloadPage('page2')">カレンダー</a></li>
+            <li><a href="#page3" onclick="storeAndReloadPage('page3')">クイズ</a></li>
+            <li><a href="#page4" onclick="storeAndReloadPage('page4')">マップ</a></li>
+            <li><a href="#page5" onclick="storeAndReloadPage('page5')">アプリについて</a></li>
+        </ul>
+    </div>
+
+    <div class="titleContainer">
+        <img src="image/icon.png" alt="Image">
+        <div>越前市ゴミチェッカー</div>
+    </div>
+
+    <!-- Page1 分別一覧 -->
+    <div class="content" id="page1">
+        
+        <input type="text" id="searchBox" placeholder="検索キーワードを入力してください">
+        <ul id="csvList"></ul>
+        <div id="modal">
+            <div id="modalContent"></div>
+            <span id="closeModal">&times;</span>
+        </div>
+    </div>
+
+
+    <!-- Page2 カレンダー -->
+    <div class="content" id="page2">
+        <div id="section-title2">収集日カレンダー</div>
+        <div class="select-container1">
+            <select id="selectValues"></select>
+            <button onclick="resetLocalStorage()">リセット</button>
+        </div>
+        <div id="tableSet" class="set-container">
+        <div id="tableTitle"></div>
+        <div class="button-container">
+            <button onclick="previousYear()">前年</button>
+            <button onclick="previousMonth()">前月</button>
+            <button onclick="thisMonth()">今月</button>
+            <button onclick="nextMonth()">翌月</button>
+            <button onclick="nextYear()">翌年</button>
+        </div>
+        <div class="select-container2">
+            <select id="year" onchange="generateAndAddTextCalendar()"></select>
+            <select id="month" onchange="generateAndAddTextCalendar()"></select>
+        </div>
+        <table id="calendar"></table>
+        <div id="note" class="note"></div>
+        <div id="specialMessage"></div>
+        </div>
+    </div>
+    
+
+    <!-- Page3 ゴミチェッカークイズ -->
+    <div class="content" id="page3">
+        <div class="container">
+            <div id="section-title3">ゴミチェッカークイズ（10問）</div>
+            <div id="load-screen">
+                <select id="levelSelect">
+                    <option value="1">レベル 1</option>
+                    <option value="2">レベル 2</option>
+                    <option value="3">レベル 3</option>
+                    <option value="4">レベル 4</option>
+                    <option value="5">レベル 5</option>
+                </select>
+                <button class="start-button" onclick="startQuiz()">スタート</button>
+            </div>
+
+            <div id="question-screen" class="question-screen">
+                <div align="center">次のゴミは何ゴミ？</div>
+                <p id="question"></p>
+            </div>
+
+            <div id="result-screen" class="result-screen">
+                <p id="result"></p>
+                <div class="next-question">
+                    <button id="next-question-btn" onclick="nextQuestion()" disabled>次の問題へ</button>
+                </div>
+                <div class="show-result">
+                    <button id="show-result-btn" onclick="showResult()" disabled>結果を見る</button>
+                </div>
+            </div>
+
+            <div id="score-screen" class="result-screen" style="display: none;">
+                <p id="score"></p>
+                <div class="starContainer" id="starContainer"></div>
+            </div>
+
+            <div id="level-scores" style="display: none;">
+                <p>レベル別スコア</p>
+                <div id="level-score-1"></div>
+                <div class="starContainer" id="starContainer-1"></div>
+                <div id="level-score-2"></div>
+                <div class="starContainer" id="starContainer-2"></div>
+                <div id="level-score-3"></div>
+                <div class="starContainer" id="starContainer-3"></div>
+                <div id="level-score-4"></div>
+                <div class="starContainer" id="starContainer-4"></div>
+                <div id="level-score-5"></div>
+                <div class="starContainer" id="starContainer-5"></div>
+                <div id="end-screen">
+                    <button id="reset-button" onclick="resetRecords()">スコアをリセット</button>
+                </div>
+            </div>
+
+            <div id="start-back-screen">
+                <button id="start-back-button" onclick="storeAndReloadPage('page3')" disabled>スタートに戻る</button>
+            </div>
+
+        </div>
+        <canvas id="colorful-balls"></canvas>
+        <canvas id="monotone-balls"></canvas>
+        <canvas id="fireworks-canvas"></canvas>
+    </div>
+    
+
+    <!-- Page4 マップ -->
+    <div class="content" id="page4">
+        <div id="map-container">
+            <div id="map" style="height: 100%;"></div>
+        </div>
+    </div>
+
+
+    <!-- Page5 ゴミチェッカーについて -->
+    <div class="content" id="page5">
+        <div class="container">
+            <div id="section-title5">越前市ゴミチェッカーについて</div>
+            <div class="section">概要</div>
+            <div>「越前市ゴミチェッカー」は、ゴミの分別方法や収集日程を簡単に確認できるWebアプリケーションです。越前市のオープンデータを活用しています。</div>
+            <div class="section">主な機能</div>
+            <ul>
+                <li><strong>分別一覧</strong>: ゴミの分別方法を一覧で確認できます。検索機能で絞り込むことができます。</li>
+                <li><strong>カレンダー</strong>: ゴミ収集日をカレンダー形式で表示します。自分の町内を登録して、個別の収集日程を確認できます。年末年始の収集日は自治体にお問い合わせください。</li>
+                <li><strong>クイズ</strong>: ゴミの分別に関するクイズにより楽しみながら学ぶことができます。レベル別で知識を深めることができます。</li>
+                <li><strong>マップ</strong>: 清掃センターの場所を地図上で確認できます。</li>
+            </ul>
+
+            <div class="section">データソース</div>
+            <div>このアプリは越前市のオープンデータを活用して、ゴミの分別情報や収集日程などのデータを提供しています。</div>
+            <div>越前市オープンデータサイト（GitHub）: <a href="https://github.com/echizencity/opendata">https://github.com/echizencity/opendata</a></div>
+            <ul>
+                
+                <li>50音別ごみ分別表: <a href="https://echizencity.github.io/opendata/gomijp.csv">gomijp.csv</a></li>
+                <li>町別ごみ収集日: <a href="https://echizencity.github.io/opendata/gomisyusyubi.csv">gomisyusyubi.csv</a></li>
+                <li>施設情報: <a href="https://echizencity.github.io/opendata/01shisetsu.csv">01shisetsu.csv</a></li>
+            </ul>
+
+            <div class="section">使用技術</div>
+            <div>このアプリはHTML、CSS、JavaScriptをベースに開発しました。また、クイズ機能を実装するためにCanvas要素を活用しています。</div>
+
+            <div class="section">クイズと花火アニメーション</div>
+            <div>ランダムに表示される10問のクイズに挑戦し、正解した数に応じて花火アニメーションが表示されます。ただし、一部の端末のスペックによっては、アニメーションが滑らかに動かない場合がありますのでご了承ください。</div>
+
+            <div class="section">地図情報の提供元とライブラリ</div>
+            <div>このアプリ内で使用している地図は、国土地理院が提供する<a href="https://maps.gsi.go.jp/development/ichiran.html">地図タイル</a>を活用しています。また、地図の表示にはオープンソースのJavaScriptライブラリである<a href="https://leafletjs.com/">Leaflet</a>を使用しています。</div>
+
+            <div class="section">本サイトの略表示</div>
+            <div>分別一覧やクイズの一部では次の略表示を使用しています。</div>
+            <table id="csvTable" class="csvTable"></table>
+
+            <div class="section">開発者情報</div>
+            <div>私たちは地域の課題を楽しく解決することを目的として活動しています。ご意見やご不明な点などがありましたら、以下の連絡先までお気軽にご連絡ください。</div>
+            <ul>
+                <li>開発者名: 越前市ぷらぷらぼ</li>
+                <li>越前市ぷらぷらぼ公式サイト: <a href="https://pulapulabo.jimdofree.com/">https://pulapulabo.jimdofree.com/</a></li>
+                <li>ゴミチェッカー公式サイト: <a href="http://www4.ttn.ne.jp/~flowerhana/gomiindex.html">http://www4.ttn.ne.jp/~flowerhana/</a></li>
+            </ul>
+
+            <div class="section">（外部サイト）ゴミに関する行政サイト</div>
+            <ul>
+                <li><a href="https://www.city.echizen.lg.jp/office/kankyounourin/051/gomirecycle/dasikata-wakekata.html">ごみの分け方・出し方</a></li>
+                <li><a href="https://www.city.echizen.lg.jp/office/kankyounourin/051/gomirecycle/syuusyuubigai.html">清掃センターへのごみ持ち込み</a></li>
+                <li><a href="https://www.city.echizen.lg.jp/office/kankyounourin/051/zatsugamikyushutusakusen.html">雑がみの資源回収</a></li>
+                <li><a href="https://www.city.echizen.lg.jp/office/kankyounourin/051/kinzokudenkiseihinkaisyu.html">金属類・電気製品拠点回収</a></li>
+                <li><a href="https://www.city.echizen.lg.jp/office/kankyounourin/051/gomirecycle/lifeline.html">ごみ収集中止のお知らせ</a></li>
+                <li><a href="tel:0778-22-5342">環境政策課へTEL</a></li>
+            </ul>
+
+        </div>
+    </div>
+
+</body>
+</html>

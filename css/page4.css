@@ -1,0 +1,29 @@
+#map-container {
+    position: relative;
+    width: 100%;
+    height: calc(100vh - 60px); /* 画面高さから上部メニューの高さを引いた分に合わせる */
+}
+
+
+/* ポップアップのスタイル */
+.leaflet-popup-content {
+    color: #555555; /* ポップアップの文字色 */
+    padding: 0px; /* ポップアップの余白 */
+}
+
+/* テーブルのスタイル */
+.leaflet-popup-content table {
+    border-collapse: collapse; /* セル間の境界を取り除く */
+    border: 1px solid #555555; /* セルに1pxの境界を追加 */
+    width: 100%; /* テーブルの幅を100%に設定 */
+}
+
+.nowrap td:nth-child(1) {
+    white-space: nowrap;
+}
+
+/* テーブルのセルのスタイル */
+.leaflet-popup-content td, .leaflet-popup-content th {
+    border: 1px solid #555555; /* セルに1pxの境界を追加 */
+    padding: 4px; /* セルの内側に余白を持たせる */
+}
