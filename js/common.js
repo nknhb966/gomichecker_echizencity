@@ -1,10 +1,10 @@
 // CSVデータのURL
 const csvURL1 = "https://echizencity.github.io/opendata/gomijp.csv";
-const csvURL2 = "https://nknhb966.github.io/gomichecker_echizencity/gomikubunryaku.csv";
+const csvURL2 = "https://nknhb966.github.io/gomichecker_echizencity/csv/gomikubunryaku.csv";
 const csvURL3 = 'https://echizencity.github.io/opendata/gomisyusyubi.csv';
-const csvURL4 = 'https://nknhb966.github.io/gomichecker_echizencity/gomisyusyubi_zyogai.csv';
-const csvURL5 = 'https://nknhb966.github.io/gomichecker_echizencity/gomisyusyubi_rename.csv';
-const csvURL6 = 'https://nknhb966.github.io/gomichecker_echizencity/gomiquiz.csv';
+const csvURL4 = 'https://nknhb966.github.io/gomichecker_echizencity/csv/gomisyusyubi_zyogai.csv';
+const csvURL5 = 'https://nknhb966.github.io/gomichecker_echizencity/csv/gomisyusyubi_rename.csv';
+const csvURL6 = 'https://nknhb966.github.io/gomichecker_echizencity/csv/gomiquiz.csv';
 const csvURL7 = 'https://echizencity.github.io/opendata/01shisetsu.csv';
 
 // 現在ロードされているJSファイルのURLを格納する変数
