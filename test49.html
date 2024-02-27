@@ -1,0 +1,106 @@
+<html>
+  <head>
+    <title>TEST2</title>
+    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+    <style>
+      button {
+        width: 3em;
+        height: 3em;
+      }
+    </style>
+  </head>
+  <body style="margin: 0; overflow: hidden">
+    <div style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 1000;">
+      <button onclick="moveModel('top')">↑</button>
+      <button onclick="moveModel('left')">←</button>
+      <button onclick="moveModel('right')">→</button>
+      <button onclick="moveModel('bottom')">↓</button>
+      <button onclick="moveModel('up')">Up</button>
+      <button onclick="moveModel('down')">Dwn</button>
+    </div>
+
+    <a-scene embedded arjs vr-mode-ui="enabled: false">
+      <a-assets>
+        <a-asset-item id="test" src="https://www.city.echizen.lg.jp/office/030/021/open-data-echizen_d/fil/00101_kokufuhakkutsu.glb" scale="1 1 1"></a-asset-item>
+        <a-asset-item id="arrow-asset" src="./arrow.glb"></a-asset-item>
+      </a-assets>
+        <a-entity id="model" gltf-model="#test" position="0 0 0" rotation="0 0 0"></a-entity>
+        <a-entity id="arrow" gltf-model="#arrow-asset" position="0 0.5 0" scale="2 2 2" rotation="0 0 180"  animation="property: position; to: 0 -0.5 0; dur: 500; easing: easeInSine; loop: true; dir: alternate"></a-entity>
+        <!-- forループを使用して球体を配置 -->
+        <script>
+          for (var i = 0; i < 8; i++) {
+            var angle = (Math.PI / 4) * i;
+            var x = Math.sin(angle) * 0.3;
+            var z = Math.cos(angle) * 0.3;
+            var color = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#ffa500', '#800080'][i];
+
+            var sphere = document.createElement('a-sphere');
+            sphere.setAttribute('radius', '0.1');
+            sphere.setAttribute('color', color);
+            sphere.setAttribute('position', x + ' 2.5 ' + z);
+            document.querySelector('a-marker').appendChild(sphere);
+          }
+        </script>
+      <a-marker type="pattern" url="pattern-marker.patt">
+      </a-marker>
+      <a-entity camera></a-entity>
+    </a-scene>
+
+    <script>
+      document.querySelector("a-scene").renderer.gammaOutput=true;
+
+      function moveModel(direction) {
+        var model = document.getElementById('model');
+        var currentPosition = model.getAttribute('position');
+        var step = 0.5;
+
+        var spheres = document.querySelectorAll('a-sphere');
+        for (var i = 0; i < spheres.length; i++) {
+          var spherePosition = spheres[i].getAttribute('position');
+          switch(direction) {
+            case 'left':
+              spheres[i].setAttribute('position', {x: parseFloat(spherePosition.x) - step, y: spherePosition.y, z: spherePosition.z});
+              break;
+            case 'right':
+              spheres[i].setAttribute('position', {x: parseFloat(spherePosition.x) + step, y: spherePosition.y, z: spherePosition.z});
+              break;
+            case 'bottom':
+              spheres[i].setAttribute('position', {x: spherePosition.x, y: spherePosition.y, z: parseFloat(spherePosition.z) + step});
+              break;
+            case 'top':
+              spheres[i].setAttribute('position', {x: spherePosition.x, y: spherePosition.y, z: parseFloat(spherePosition.z) - step});
+              break;
+            case 'down':
+              spheres[i].setAttribute('position', {x: spherePosition.x, y: parseFloat(spherePosition.y) + step, z: spherePosition.z});
+              break;
+            case 'up':
+              spheres[i].setAttribute('position', {x: spherePosition.x, y: parseFloat(spherePosition.y) - step, z: spherePosition.z});
+              break;
+          }
+        }
+
+        switch(direction) {
+          case 'left':
+            model.setAttribute('position', {x: currentPosition.x - step, y: currentPosition.y, z: currentPosition.z});
+            break;
+          case 'right':
+            model.setAttribute('position', {x: currentPosition.x + step, y: currentPosition.y, z: currentPosition.z});
+            break;
+          case 'bottom':
+            model.setAttribute('position', {x: currentPosition.x, y: currentPosition.y, z: currentPosition.z + step});
+            break;
+          case 'top':
+            model.setAttribute('position', {x: currentPosition.x, y: currentPosition.y, z: currentPosition.z - step});
+            break;
+          case 'down':
+            model.setAttribute('position', {x: currentPosition.x, y: currentPosition.y + step, z: currentPosition.z});
+            break;
+          case 'up':
+            model.setAttribute('position', {x: currentPosition.x, y: currentPosition.y - step, z: currentPosition.z});
+            break;
+        }
+      }
+    </script>
+  </body>
+</html>
